@@ -40,6 +40,21 @@ public class UserDaoTests extends AbstractTestNGSpringContextTests {
     private User[] users;
     private final static int USERS_COUNT = 2;
 
+    /*
+     * Prepare users
+     */
+    @BeforeMethod
+    public void setUp() {
+        users = new User[USERS_COUNT];
+        for (int i = 0; i < USERS_COUNT; i++) {
+            users[i] = new User();
+            users[i].setFirstName("TestFirstName" + i);
+            users[i].setLastName("TestLastName" + i);
+            users[i].setPassword("TestPassword" + i);
+            users[i].setEmail("TestEmail" + i);
+        }
+    }
+
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullEmailNotAllowed() {
         users[0].setEmail(null);
@@ -64,21 +79,6 @@ public class UserDaoTests extends AbstractTestNGSpringContextTests {
         userDao.create(users[0]);
     }
 
-    /*
-     * Prepare users
-     */
-    @BeforeMethod
-    public void setUp() {
-        users = new User[USERS_COUNT];
-        for (int i = 0; i < USERS_COUNT; i++) {
-            users[i] = new User();
-            users[i].setFirstName("TestFirstName" + i);
-            users[i].setLastName("TestLastName" + i);
-            users[i].setPassword("TestPassword" + i);
-            users[i].setEmail("TestEmail" + i);
-        }
-    }
-
     @Test
     public User findById() {
         for (int i = 0; i < USERS_COUNT; i++) {
@@ -91,12 +91,21 @@ public class UserDaoTests extends AbstractTestNGSpringContextTests {
 
     @Test
     public void findByEmail() {
-        // TODO Auto-generated method stub
+        for (int i = 0; i < USERS_COUNT; i++) {
+            userDao.create(users[i]);
+            String email = users[i].getEmail();
+            User found = userDao.findByEmail(email);
+            assertUsersEquals(users[i], found);
+        }
     }
 
-    @Test
+   // @Test
     public void findAll() {
-        // TODO Auto-generated method stub
+        for (int i = 0; i < USERS_COUNT; i++) {
+            userDao.create(users[i]);
+        }
+        List<User> foundUsers = userDao.findAll();
+        Assert.assertEquals(foundUsers.size(), USERS_COUNT);
     }
 
     @Test
@@ -109,12 +118,17 @@ public class UserDaoTests extends AbstractTestNGSpringContextTests {
 
     @Test
     public void delete() {
-        // TODO Auto-generated method stub
+        User tested = users[0];
+        userDao.create(tested);
+        Long id = tested.getId();
+        userDao.delete(tested);
+        User notFound = userDao.findById(id);
+        Assert.assertNull(notFound, "Found user should have been null");
     }
 
     @Test
     public void update() {
-        int usedUsers = 1;
+        int usedUsers = USERS_COUNT; // or 1
         String differenEmail = "DifferenEmail";
         for (int i = 0; i < usedUsers; i++) {
             userDao.create(users[i]);
