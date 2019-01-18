@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.skupina06.team02.rms.app.web.rest.controllers;
 
 import cz.muni.fi.pa165.skupina06.team02.rms.app.dto.UserDTO;
+import cz.muni.fi.pa165.skupina06.team02.rms.app.dto.UserPublicDTO;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.facade.UserFacade;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.service.facades.UserFacadeImpl;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.web.rest.ApiUris;
@@ -16,6 +17,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,9 +54,11 @@ public class UsersController extends BaseController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public final Long register(@RequestBody UserDTO userDTO) throws Exception {
-    //public final UserDTO registerUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult bindingResult,
-    //        Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) throws Exception {
-    
+        // public final UserDTO registerUser(@Valid @ModelAttribute("user") UserDTO
+        // userDTO, BindingResult bindingResult,
+        // Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder
+        // uriBuilder) throws Exception {
+
         logger.debug("rest register(UserDTO)", userDTO.toString());
         userFacade.registerUser(userDTO, userDTO.getPassword());
         userDTO = userFacade.findUserByEmail(userDTO.getEmail());
@@ -64,41 +69,41 @@ public class UsersController extends BaseController {
     }
 
     /**
-    *
-    * set users household according ids
-    * 
-    * @param UserDTO as converted json from body
-    * @return UserDTO id
-    * @throws ResourceNotFoundException
-    */
-   @RequestMapping(value = "/sethousehold/{userId}/{householdId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-   public final boolean setHousehold(@PathVariable("userId") long userId,@PathVariable("householdId") long householdId) throws Exception {
-       return userFacade.updateHousheold(userId, householdId);
-   }
-    
-    
+     *
+     * set users household according ids
+     * 
+     * @param UserDTO as converted json from body
+     * @return UserDTO id
+     * @throws ResourceNotFoundException
+     */
+    @RequestMapping(value = "/sethousehold/{userId}/{householdId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final boolean setHousehold(@PathVariable("userId") long userId,
+            @PathVariable("householdId") long householdId) throws Exception {
+        return userFacade.updateHousheold(userId, householdId);
+    }
+
     /**
-    *
-    * 
-    * @param id user identifier
-    * @return UserDTO
-    * @throws ResourceNotFoundException
-    */
+     *
+     * 
+     * @param id user identifier
+     * @return UserDTO
+     * @throws ResourceNotFoundException
+     */
     /*
-   @RequestMapping(value = "/authenticate/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-   public final Long authenticate(@RequestBody UserDTO userDTO) throws Exception {
-   //public final UserDTO registerUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult bindingResult,
-   //        Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) throws Exception {
-   
-       logger.debug("rest registerUser({})", userDTO.toString());
-       userFacade.registerUser(userDTO, userDTO.getPassword());
-       userDTO = userFacade.findUserByEmail(userDTO.getEmail());
-       if (userDTO == null) {
-           throw new ResourceNotFoundException();
-       }
-       return userDTO.getId();
-   }*/
-   
+     * @RequestMapping(value = "/authenticate/", method = RequestMethod.POST,
+     * produces = MediaType.APPLICATION_JSON_VALUE, consumes =
+     * MediaType.APPLICATION_JSON_VALUE) public final Long authenticate(@RequestBody
+     * UserDTO userDTO) throws Exception { //public final UserDTO
+     * registerUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult
+     * bindingResult, // Model model, RedirectAttributes redirectAttributes,
+     * UriComponentsBuilder uriBuilder) throws Exception {
+     * 
+     * logger.debug("rest registerUser({})", userDTO.toString());
+     * userFacade.registerUser(userDTO, userDTO.getPassword()); userDTO =
+     * userFacade.findUserByEmail(userDTO.getEmail()); if (userDTO == null) { throw
+     * new ResourceNotFoundException(); } return userDTO.getId(); }
+     */
+
     /**
      * returns all users according to a Summary View
      * {@link cz.muni.fi.pa165.team02.rms.app.web.views.View}
@@ -140,7 +145,7 @@ public class UsersController extends BaseController {
      * @return UserDTO
      * @throws ResourceNotFoundException
      */
-    @RequestMapping(value = "/{string}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{string}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final UserDTO getUserByEmail(@PathVariable("email") String email) throws Exception {
 
         logger.debug("rest getUser({})", email);
@@ -150,4 +155,38 @@ public class UsersController extends BaseController {
         }
         return userDTO;
     }
+
+    /**
+     *
+     * get currently logged user
+     * 
+     * @param id user identifier
+     * @return UserDTO
+     * @throws ResourceNotFoundException
+     */
+    @RequestMapping(value = "/current", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final UserPublicDTO getLoggedUser() throws Exception {
+        logger.debug("rest getLoggedUser({})");
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        // username = user email
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        UserDTO userDTO = userFacade.findUserByEmail(username);
+        if (userDTO == null) {
+            throw new ResourceNotFoundException();
+        }
+        UserPublicDTO up = new UserPublicDTO();
+        up.setEmail(userDTO.getEmail());
+        up.setFirstName(userDTO.getFirstName());
+        up.setLastName(userDTO.getLastName());
+        up.setId(userDTO.getId());
+        return up;
+    }
+
 }

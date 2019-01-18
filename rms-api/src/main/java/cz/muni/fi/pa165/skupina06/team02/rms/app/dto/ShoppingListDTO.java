@@ -3,9 +3,12 @@ package cz.muni.fi.pa165.skupina06.team02.rms.app.dto;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class ShoppingListDTO {
     private Long id;
     private String name;
+    @JsonIgnoreProperties({"list"})
     private List<ShoppingItemDTO> shoppingItems;
     private HouseholdDTO household;
 

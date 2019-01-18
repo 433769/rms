@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * @author Vojtech Prusa
  * <p>
@@ -22,9 +24,11 @@ public class UserDTO {
 
     private String lastName;
 
+    
+    @JsonIgnoreProperties({"tenants"})
     private Set<HouseholdDTO> households = new HashSet<>();
 
-
+    @JsonIgnoreProperties({"buyer"})
     private List<ShoppingItemDTO> items = new ArrayList<>();
 
     /**

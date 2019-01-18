@@ -1,13 +1,16 @@
 package cz.muni.fi.pa165.skupina06.team02.rms.app.dto;
 
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class ShoppingItemDTO {
     private Long id;
     private String name;
     private Long quantity;
     private Boolean bought;
-    private UserDTO buyer;
+    
+    private UserPublicDTO buyer;
+    @JsonIgnoreProperties({"shoppingItems"})
     private ShoppingListDTO list;
 
     public void setId(Long id) {
@@ -26,7 +29,7 @@ public class ShoppingItemDTO {
         this.bought = bought;
     }
 
-    public void setBuyer(UserDTO buyer) {
+    public void setBuyer(UserPublicDTO buyer) {
         this.buyer = buyer;
     }
 
@@ -50,7 +53,7 @@ public class ShoppingItemDTO {
         return bought;
     }
 
-    public UserDTO getBuyer() {
+    public UserPublicDTO getBuyer() {
         return buyer;
     }
 

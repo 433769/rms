@@ -2,6 +2,8 @@ package cz.muni.fi.pa165.skupina06.team02.rms.app.dto;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * @author Vojtech Prusa
  * <p>
@@ -19,8 +21,10 @@ public class HouseholdDTO {
 
     private String state;
 
-    private Set<UserPublicDTO> tenants = new HashSet<>();
+    @JsonIgnoreProperties({"household","password"})
+    private Set<UserDTO> tenants = new HashSet<>();
 
+    @JsonIgnoreProperties({"household"})
     private List<ShoppingListDTO> shoppingLists = new ArrayList<>();
 
     /**
@@ -40,7 +44,7 @@ public class HouseholdDTO {
     }
 
     public HouseholdDTO(Long id, String street, String buildingNumber, String zipCode, String state,
-                        Set<UserPublicDTO> tenants, List<ShoppingListDTO> shoppingLists) {
+                        Set<UserDTO> tenants, List<ShoppingListDTO> shoppingLists) {
         this.id = id;
         this.street = street;
         this.buildingNumber = buildingNumber;
@@ -55,7 +59,7 @@ public class HouseholdDTO {
      *
      * @return tenants instance
      */
-    public Set<UserPublicDTO> getTenants() {
+    public Set<UserDTO> getTenants() {
         return tenants;
     }
 
@@ -64,7 +68,7 @@ public class HouseholdDTO {
      *
      * @param tenants instance
      */
-    public void setTenants(Set<UserPublicDTO> tenants) {
+    public void setTenants(Set<UserDTO> tenants) {
         this.tenants = tenants;
     }
 
