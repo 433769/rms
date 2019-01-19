@@ -8,8 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ShoppingListDTO {
     private Long id;
     private String name;
-    @JsonIgnoreProperties({"list"})
+    @JsonIgnoreProperties({"shoppingList","shoppingLists", "households"})
     private List<ShoppingItemDTO> shoppingItems;
+    @JsonIgnoreProperties({"tenants", "shoppingLists"})
     private HouseholdDTO household;
 
     public Long getId() {

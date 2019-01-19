@@ -66,6 +66,17 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -u Ada
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -u Adam@rms.com:password -X GET http://localhost:8080/rms-web/rest/users/current --data '{"password":"password","email":"Test","firstName":"","lastName":""}'
 ```
 
+- id:
+
+```
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -u Adam@rms.com:password -X GET http://localhost:8080/rms-web/rest/users/id/{id} --data '{"password":"password","email":"Test","firstName":"","lastName":""}'
+```
+
+- email:
+
+```
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -u Adam@rms.com:password -X GET http://localhost:8080/rms-web/rest/users/id/{email} --data '{"password":"password","email":"Test","firstName":"","lastName":""}'
+```
 
 Households:
 

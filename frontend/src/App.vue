@@ -13,6 +13,10 @@
           <b-nav-item>
             <router-link :to="{ name: 'Households' }" tag="nav-item">Households</router-link>
           </b-nav-item>
+
+             <b-nav-item>
+            <router-link :to="{ name: 'ShoppingList' }" tag="nav-item">Shopping List</router-link>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
       <b-collapse is-nav id="nav_collapse" v-else>

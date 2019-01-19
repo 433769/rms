@@ -10,8 +10,8 @@ public class ShoppingItemDTO {
     private Boolean bought;
     
     private UserPublicDTO buyer;
-    @JsonIgnoreProperties({"shoppingItems"})
-    private ShoppingListDTO list;
+    @JsonIgnoreProperties({"shoppingItems","household"})
+    private ShoppingListDTO shoppingList;
 
     public void setId(Long id) {
         this.id = id;
@@ -33,8 +33,8 @@ public class ShoppingItemDTO {
         this.buyer = buyer;
     }
 
-    public void setList(ShoppingListDTO list) {
-        this.list = list;
+    public void setShoppingList(ShoppingListDTO list) {
+        this.shoppingList = list;
     }
 
     public Long getId() {
@@ -57,8 +57,8 @@ public class ShoppingItemDTO {
         return buyer;
     }
 
-    public ShoppingListDTO getList() {
-        return list;
+    public ShoppingListDTO getShoppingList() {
+        return shoppingList;
     }
 
 
@@ -71,12 +71,12 @@ public class ShoppingItemDTO {
                 quantity.equals(that.quantity) &&
                 bought.equals(that.bought) &&
                 Objects.equals(buyer, that.buyer) &&
-                Objects.equals(list, that.list);
+                Objects.equals(shoppingList, that.shoppingList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, quantity, bought, buyer, list);
+        return Objects.hash(name, quantity, bought, buyer, shoppingList);
     }
 
     /* (non-Javadoc)
@@ -85,6 +85,6 @@ public class ShoppingItemDTO {
     @Override
     public String toString() {
         return "ShoppingItemDTO [id=" + id + ", name=" + name + ", quantity=" + quantity + ", bought=" + bought
-                + ", buyer=" + buyer + ", list=" + list + "]";
+                + ", buyer=" + buyer + ", list=" + shoppingList + "]";
     }
 }

@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -60,6 +61,7 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
 
         ShoppingList adamsSl = shoppingList("AdamsSL", adamsH, null);
         ShoppingItem orange = shoppingItem("orange", false, adam, 10l, adamsSl);
+        adamsH.addToShoppingLists(adamsSl);
         //adamsSl.addItem(orange);
         // order(admin, daysBeforeNow(10), OrderState.DONE, orderItem(duck, 5),
         // orderItem(diamonds, 1));

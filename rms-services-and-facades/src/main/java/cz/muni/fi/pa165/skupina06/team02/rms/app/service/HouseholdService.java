@@ -11,6 +11,8 @@ import cz.muni.fi.pa165.skupina06.team02.rms.app.entity.User;
  *
  *         An interface that defines a service access to the {@link Household}
  *         entity.
+ *         
+ *         {@link HouseholdServiceImpl}
  */
 public interface HouseholdService {
 

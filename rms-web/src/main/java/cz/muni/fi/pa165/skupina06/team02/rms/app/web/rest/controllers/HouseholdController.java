@@ -42,7 +42,6 @@ public class HouseholdController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<HouseholdDTO> getShoppingItem() {
-
         logger.debug("rest getHousehold()");
         return housheoldFacade.findAll();
     }
@@ -56,7 +55,7 @@ public class HouseholdController extends BaseController {
      * @throws Exception ResourceNotFoundException
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HouseholdDTO getShoppingItem(@PathVariable("id") long id) throws Exception {
+    public final HouseholdDTO getHousehold(@PathVariable("id") long id) throws Exception {
 
         logger.debug("rest getHousehold({})", id);
 

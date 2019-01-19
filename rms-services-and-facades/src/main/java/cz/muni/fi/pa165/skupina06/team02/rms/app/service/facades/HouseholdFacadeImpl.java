@@ -2,6 +2,8 @@ package cz.muni.fi.pa165.skupina06.team02.rms.app.service.facades;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import cz.muni.fi.pa165.skupina06.team02.rms.app.entity.User;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.facade.HouseholdFacade;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.service.BeanMappingService;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.service.HouseholdService;
+import cz.muni.fi.pa165.skupina06.team02.rms.app.service.ShoppingListService;
 import cz.muni.fi.pa165.skupina06.team02.rms.app.service.UserService;
 
 /**
@@ -24,12 +27,18 @@ import cz.muni.fi.pa165.skupina06.team02.rms.app.service.UserService;
 @Service
 @Transactional
 public class HouseholdFacadeImpl implements HouseholdFacade {
+    
+    final public static Logger logger = LoggerFactory.getLogger(HouseholdFacadeImpl.class);
+
     @Autowired
     private HouseholdService householdService;
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ShoppingListService shoppingListService;
+    
     @Autowired
     private BeanMappingService beanMappingService;
 
@@ -42,7 +51,16 @@ public class HouseholdFacadeImpl implements HouseholdFacade {
     @Override
     public HouseholdDTO findHouseholdById(Long id) {
         Household household = householdService.findHouseholdById(id);
-        return (household == null) ? null : beanMappingService.mapTo(household, HouseholdDTO.class);
+        if(household != null) {
+            //logger.info("\n\n\n\n");
+            HouseholdDTO housheoldDTO = beanMappingService.mapTo(household, HouseholdDTO.class);
+            //logger.info(housheoldDTO.toString());
+            //logger.info(shoppingListService.findShoppingListById(household.getShoppingLists())));
+            household.getShoppingLists().stream().forEach(msg->logger.info(msg.toString()));
+            return housheoldDTO ;   
+        }else {
+            return null;
+        }
     }
 
     /*

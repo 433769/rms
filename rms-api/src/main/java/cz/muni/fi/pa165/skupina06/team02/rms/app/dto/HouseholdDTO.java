@@ -21,7 +21,7 @@ public class HouseholdDTO {
 
     private String state;
 
-    @JsonIgnoreProperties({"household","password"})
+    @JsonIgnoreProperties({"households","password","shoppingLists"})
     private Set<UserDTO> tenants = new HashSet<>();
 
     @JsonIgnoreProperties({"household"})
@@ -86,6 +86,7 @@ public class HouseholdDTO {
         this.id = id;
     }
 
+    
     public List<ShoppingListDTO> getShoppingLists() {
         return shoppingLists;
     }
@@ -176,4 +177,15 @@ public class HouseholdDTO {
     public int hashCode() {
         return Objects.hash(id, street, buildingNumber, zipCode, state);
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "HouseholdDTO [id=" + id + ", street=" + street + ", buildingNumber=" + buildingNumber + ", zipCode="
+                + zipCode + ", state=" + state + ", tenants=" + tenants + ", shoppingLists=" + shoppingLists + "]";
+    }
+    
+    
 }

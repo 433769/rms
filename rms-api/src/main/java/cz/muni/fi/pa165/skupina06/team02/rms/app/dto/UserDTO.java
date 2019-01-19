@@ -25,11 +25,11 @@ public class UserDTO {
     private String lastName;
 
     
-    @JsonIgnoreProperties({"tenants"})
+    @JsonIgnoreProperties({"tenants","shoppingLists"})
     private Set<HouseholdDTO> households = new HashSet<>();
 
-    @JsonIgnoreProperties({"buyer"})
-    private List<ShoppingItemDTO> items = new ArrayList<>();
+    @JsonIgnoreProperties({"households"})
+    private List<ShoppingListDTO> shoppingLists = new ArrayList<>();
 
     /**
      * Constructor
@@ -49,22 +49,22 @@ public class UserDTO {
      * @param households
      */
     public UserDTO(Long id, String password, String email, String firstName,
-                   String lastName, Set<HouseholdDTO> households, List<ShoppingItemDTO> items) {
+                   String lastName, Set<HouseholdDTO> households, List<ShoppingListDTO> shoppingLists) {
         this.id = id;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.households = households;
-        this.items = items;
+        this.shoppingLists = shoppingLists;
     }
 
-    public List<ShoppingItemDTO> getItems() {
-        return items;
+    public List<ShoppingListDTO> getShoppingLists() {
+        return shoppingLists;
     }
 
-    public void setItems(List<ShoppingItemDTO> items) {
-        this.items = items;
+    public void setShoppingLists(List<ShoppingListDTO> shoppingLists) {
+        this.shoppingLists = shoppingLists;
     }
 
 
