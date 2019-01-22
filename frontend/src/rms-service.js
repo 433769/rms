@@ -20,6 +20,13 @@ export default {
         console.log(err)
       });
   },
+  getCurrentUser() {
+    return api.get('/users/current')
+      .then(response => response.data)
+      .catch(err => {
+        console.log(err)
+      });
+  },
   getShoppingLists() {
     return api.get('/shoppinglists')
       .then(response => response.data)
@@ -53,7 +60,11 @@ export default {
       .then(response => response.data)
       .catch(err => console.log(err));
   },
-
+  getHousheoldShoppingList(id) {
+    return api.get(`/shoppinglists/${Number(id)}`)
+      .then(response => response.data)
+      .catch(err => console.log(err));
+  },
   getShoppingItem(id) {
     return api.get(`/shoppingitems/${Number(id)}`);
   },

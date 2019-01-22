@@ -38,7 +38,7 @@ public class ShoppingListController extends BaseController {
      * @return list of ShoppingItemDTOs
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final List<ShoppingListDTO> getShoppingItem() {
+    public final List<ShoppingListDTO> getShoppingList() {
         logger.debug("rest getShoppingList()");
         return shoppingListFacade.getAllShoppingLists();
     }
@@ -52,7 +52,7 @@ public class ShoppingListController extends BaseController {
      * @throws Exception ResourceNotFoundException
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final ShoppingListDTO getShoppingItem(@PathVariable("id") long id) throws Exception {
+    public final ShoppingListDTO getShoppingList(@PathVariable("id") long id) throws Exception {
 
         logger.debug("rest getShoppingList({})", id);
 

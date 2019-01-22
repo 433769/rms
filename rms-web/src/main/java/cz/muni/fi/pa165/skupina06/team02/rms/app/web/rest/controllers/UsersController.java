@@ -180,28 +180,9 @@ public class UsersController extends BaseController {
      * @throws ResourceNotFoundException
      */
     @RequestMapping(value = "/current", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final UserPublicDTO getLoggedUser() throws Exception {
+    public final UserDTO getLoggedUser() throws Exception {
         logger.debug("rest getLoggedUser({})");
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
-        // username = user email
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-
-        UserDTO userDTO = userFacade.findUserByEmail(username);
-        if (userDTO == null) {
-            throw new ResourceNotFoundException();
-        }
-        UserPublicDTO up = new UserPublicDTO();
-        up.setEmail(userDTO.getEmail());
-        up.setFirstName(userDTO.getFirstName());
-        up.setLastName(userDTO.getLastName());
-        up.setId(userDTO.getId());
-        return up;
+        return this.getCurrentUser(userFacade);
     }
 
 }

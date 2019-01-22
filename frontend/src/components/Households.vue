@@ -59,7 +59,7 @@
     methods: {
       async getData() {
         this.households = await services.getHouseholds();
-        this.user_households = await services.getUserHouseholds(this.$store.state.user.email);
+        this.user_households = await services.getUserHouseholds(this.$store.state.user.id);
       },
       joined(hid) {
         if (this.user_households != null) {

@@ -1,5 +1,7 @@
 package cz.muni.fi.pa165.skupina06.team02.rms.app.dto;
 
+import java.util.List;
+
 /**
  * @author Vojtech Prusa
  *
@@ -16,7 +18,28 @@ public class UserPublicDTO
     private String firstName;
 
     private String lastName;
+
+    private List<HouseholdDTO> householdsList;
+
     
+    /**
+     * Getter
+     *
+     * @return householdsList instance
+     */
+    public List<HouseholdDTO> getHouseholdsList() {
+        return householdsList;
+    }
+
+    /**
+     * Setter
+     * 
+     * @param householdsList instance
+     */
+    public void setHouseholdsList(List<HouseholdDTO> householdsList) {
+        this.householdsList = householdsList;
+    }
+
     /**
      * Constructor
      */
@@ -33,11 +56,12 @@ public class UserPublicDTO
      * @param firstName
      * @param lastName
      */
-    public UserPublicDTO(Long id, String password, String email, String firstName, String lastName) {
+    public UserPublicDTO(Long id, String password, String email, String firstName, String lastName, List<HouseholdDTO> householdsList) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.householdsList = householdsList;
     }
 
     
