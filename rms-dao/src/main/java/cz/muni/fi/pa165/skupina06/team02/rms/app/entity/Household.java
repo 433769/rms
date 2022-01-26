@@ -11,41 +11,54 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+
 /**
  * @author Vojtech Prusa
  *
+ * TODO @Data has to be otherwise compilation fails even though documentation says something else https://projectlombok.org/features/Data
  */
+@Data
 @Entity
 public class Household {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter @Setter
     @NotNull
     @Column(nullable = false)
     private String street;
 
+    @Getter @Setter
     @NotNull
     @Column(nullable = false)
     private String buildingNumber;
 
+    @Getter @Setter
     @NotNull
     @Column(nullable = false)
     private String zipCode;
 
+    @Getter @Setter
     @NotNull
     @Column(nullable = false)
     private String state;
 
+    @Getter
     @OneToMany
     private List<ShoppingList> shoppingLists = new ArrayList<ShoppingList>();
 
+    @Getter
     @ManyToMany
     private Set<User> tenants = new HashSet<User>();
 
     /**
      * Remove tenant
-     * 
+     *
      * @param tenant
      */
     public void removeTenant(User tenant) {
@@ -54,21 +67,13 @@ public class Household {
 
     /**
      * Add tenant to tenants and Household to tenant
-     * 
+     *
      * @param tenant
      */
     public void addTenant(User tenant) {
         tenants.add(tenant);
     }
 
-    /**
-     * Getter
-     * 
-     * @return tenants instacne
-     */
-    public Set<User> getTenants() {
-        return tenants;
-    }
 
     /**
      * Default Constructor
@@ -77,7 +82,7 @@ public class Household {
      */
     public Household() {
     }
-    
+
     /**
      * Constructor
      *
@@ -88,85 +93,13 @@ public class Household {
         this.id = id;
     }
 
-    
-    /**
-     * @return shopping list instance
-     */
-    public List<ShoppingList> getShoppingLists() {
-        return shoppingLists;
-    }
-
     /**
      * Adds Shopping list to list of Shopping lists of Household
-     * 
+     *
      * @param shoppingList instance
      */
     public void addToShoppingLists(ShoppingList shoppingList) {
         shoppingLists.add(shoppingList);
-    }
-
-    /**
-     * @return id
-     */
-    public Long getId() {
-        return id;
-    }
-
-
-    /**
-     * @return street
-     */
-    public String getStreet() {
-        return street;
-    }
-
-    /**
-     * @param street value
-     */
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    /**
-     * @return building number
-     */
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    /**
-     * @param buildingNumber value
-     */
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
-    /**
-     * @return zip code
-     */
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    /**
-     * @param zipCode value
-     */
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    /**
-     * @return state
-     */
-    public String getState() {
-        return state;
-    }
-
-    /**
-     * @param state value
-     */
-    public void setState(String state) {
-        this.state = state;
     }
 
     @Override
